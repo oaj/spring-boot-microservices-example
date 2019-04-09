@@ -1,7 +1,7 @@
 # spring-boot-microservices-example
 
 - discovery eureka server
-- zuul gateway
+- zuul gateway server
 - docker images are build via dockerfile-maven-plugin
 - jms activemq server
 - micro services talk via RestTemplate
