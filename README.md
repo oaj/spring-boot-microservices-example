@@ -12,7 +12,7 @@
 
 
 
-### Docker
+## Docker
 To use dockerfile-maven-plugin you must add your docker server server to .m2/setting.xml under the servers tag:
 
 ```
