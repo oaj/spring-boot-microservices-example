@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hello")
 public class HelloResource {
 
-    @RequestMapping("who")
+    @RequestMapping("/who")
     public String sayHello() {
         return "Hello World";
     }
