@@ -32,7 +32,7 @@ class ShipCommandLineRunner implements CommandLineRunner {
         // Top beers from https://www.beeradvocate.com/lists/us
         Stream.of("Clipper", "Canoe",
                 "Laser boat", "Brig", "Super tanker",
-                "Container ship", "Coaster", "Barge").forEach(name ->
+                "Container ship", "Coaster", "Barge", "Trump").forEach(name ->
                 repository.save(new Ship(name))
         );
 
