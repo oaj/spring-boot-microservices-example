@@ -8,3 +8,8 @@ services:
     image: "rabbitmq:3-management"
     ports:
       - "15672:15672"
+  activemq:
+    image: "rmohr/activemq:5.15.4"
+    ports:
+      - "61616:61616"
+      - "8161:8161"
