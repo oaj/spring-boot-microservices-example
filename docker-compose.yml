@@ -1,15 +1,63 @@
 version: '3'
 services:
+#  rabbitmq:
+#    image: "rabbitmq:3-management"
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
   discovery:
     build: discovery-server
     ports:
       - "8761:8761"
-  rabbitmq:
-    image: "rabbitmq:3-management"
+#  activemq:
+#    image: "rmohr/activemq:5.15.4"
+#    ports:
+#      - "61616:61616"
+#      - "8161:8161"
+
+#  rating-data:
+#    build: ./rating-data-service
+#    ports:
+#      - "8083:8083"
+#    depends_on:
+#      - discovery
+#    environment:
+#      SPRING_APPLICATION_NAME: rating-data-service
+#      #      SPRING_PROFILES_ACTIVE: enableEureka
+#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+  movie-info:
+    build: ./movie-info-service
     ports:
-      - "15672:15672"
-  activemq:
-    image: "rmohr/activemq:5.15.4"
-    ports:
-      - "61616:61616"
-      - "8161:8161"
+      - "8082:8082"
+    depends_on:
+      - discovery
+    environment:
+      SPRING_APPLICATION_NAME: movie-info-service
+#      SPRING_PROFILES_ACTIVE: enableEureka
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+#  movie-catalog:
+#    build: ./movie-catalog-service
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - discovery
+#      - movie-info
+#      - rating-data
+#    environment:
+#      SPRING_APPLICATION_NAME: movie-catalog-service
+#      #      SPRING_PROFILES_ACTIVE: enableEureka
+#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+#  zuul:
+#    build: zuul-service
+#    ports:
+#      - "8081:8081"
+#  eureka:
+#    image: "springcloud/eureka"
+#    ports:
+#      - "8761:8761"

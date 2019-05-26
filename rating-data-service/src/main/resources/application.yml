@@ -1,0 +1,25 @@
+server:
+  port: 8079
+
+# configure eureka client
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# give the application a name
+spring:
+  application:
+    name: rating-data-service
+  activemq:
+    broker-url: tcp://localhost:61616
+
+# custom logging settings
+logging:
+  level:
+    - ".=info"
+    - "com.memorynotfound=debug"
+    - "org.springframework=info"

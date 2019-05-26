@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: movie-info-service
+
+
+
+#server:
+#  port: 8082
+#
+## configure eureka client
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+#
+## give the application a name
+#spring:
+#  application:
+#    name: movie-info-service
+#  activemq:
+#    broker-url: tcp://localhost:61616
+#
+## custom logging settings
+#logging:
+#  level:
+#    - ".=info"
+#    - "com.memorynotfound=debug"
+#    - "org.springframework=info"
