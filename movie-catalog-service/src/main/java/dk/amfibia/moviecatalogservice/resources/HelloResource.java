@@ -12,9 +12,4 @@ public class HelloResource {
         return "Hello World";
     }
 
-//    @RequestMapping("/who")
-//    public String getBears() {
-//
-//        return "Hello World";
-//    }
 }

@@ -8,21 +8,21 @@ import org.springframework.jms.annotation.EnableJms;
 
 import javax.jms.Queue;
 
-//@EnableJms
-//@Configuration
-//public class Config {
-//
-//    @Bean
-//    Queue queue() {
-//        return new ActiveMQQueue("test.queue");
-//    }
-//
-//}
-
-//@Profile(Array("enableEureka"))
+@EnableJms
 @Configuration
-@EnableEurekaClient
-class EurekaClientConfiguration {
+public class Config {
+
+    @Bean
+    Queue queue() {
+        return new ActiveMQQueue("test.queue");
+    }
 
 }
+
+//@Profile(Array("enableEureka"))
+//@Configuration
+//@EnableEurekaClient
+//class EurekaClientConfiguration {
+//
+//}
 

@@ -1,57 +1,87 @@
+#version: '2'
+#services:
+#  eureka-server:
+#    image: rosenthal/eureka-server
+#    expose:
+#      - "8761"
+#  user-registration:
+#    image: rosenthal/user-registration
+#    container_name: user-registration
+#    ports:
+#      - "9000:8080"
+#    environment:
+#      server.port: 8080
+#      eureka.client.enabled: 'true'
+#      eureka.host: eureka-server
+#      eureka.instance.preferIpAddress: 'true'
+
 version: '3'
 services:
+
 #  rabbitmq:
 #    image: "rabbitmq:3-management"
+#  container_name: rabbitmq
 #    ports:
 #      - "5672:5672"
 #      - "15672:15672"
-  discovery:
-    build: discovery-server
+
+  eureka-server:
+    build: eureka-server
+    container_name: eureka-server
     ports:
       - "8761:8761"
-#  activemq:
-#    image: "rmohr/activemq:5.15.4"
-#    ports:
-#      - "61616:61616"
-#      - "8161:8161"
+    environment:
+      EUREKA.CLIENT.ENABLED: 'true'
 
-#  rating-data:
-#    build: ./rating-data-service
-#    ports:
-#      - "8083:8083"
-#    depends_on:
-#      - discovery
-#    environment:
-#      SPRING_APPLICATION_NAME: rating-data-service
-#      #      SPRING_PROFILES_ACTIVE: enableEureka
-#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  activemq:
+    image: "rmohr/activemq:5.15.4"
+    container_name: activemq
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+
+  rating-data:
+    build: ./rating-data-service
+    container_name: rating-data
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-server
+      - activemq
+    environment:
+      SPRING_APPLICATION_NAME: rating-data-service
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.ACTIVEMQ.BROKER-URL: tcp://activemq:61616
 
   movie-info:
     build: ./movie-info-service
+    container_name: movie-info
     ports:
       - "8082:8082"
     depends_on:
-      - discovery
+      - eureka-server
+      - activemq
     environment:
       SPRING_APPLICATION_NAME: movie-info-service
-#      SPRING_PROFILES_ACTIVE: enableEureka
-      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+      EUREKA.INSTANCE.PREFERIPADDRESS: 'true'
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.ACTIVEMQ.BROKER-URL: tcp://activemq:61616
 
-#  movie-catalog:
-#    build: ./movie-catalog-service
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - discovery
-#      - movie-info
-#      - rating-data
-#    environment:
-#      SPRING_APPLICATION_NAME: movie-catalog-service
-#      #      SPRING_PROFILES_ACTIVE: enableEureka
-#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  movie-catalog:
+    build: ./movie-catalog-service
+    container_name: movie-catalog
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+      - movie-info
+      - rating-data
+    environment:
+      SPRING_APPLICATION_NAME: movie-catalog-service
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING.ACTIVEMQ.BROKER-URL: tcp://activemq:61616
 
 #  zuul:
 #    build: zuul-service
