@@ -83,11 +83,18 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING.ACTIVEMQ.BROKER-URL: tcp://activemq:61616
 
-#  zuul:
-#    build: zuul-service
-#    ports:
-#      - "8081:8081"
-#  eureka:
-#    image: "springcloud/eureka"
-#    ports:
-#      - "8761:8761"
+  zuul:
+    build: zuul-service
+    container_name: zuul-service
+    ports:
+      - "8079:8079"
+    depends_on:
+      - eureka-server
+      - movie-info
+      - rating-data
+      - movie-catalog
+    environment:
+      SPRING_APPLICATION_NAME: zuul-service
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+
